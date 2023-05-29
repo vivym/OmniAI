@@ -1,0 +1,29 @@
+data:
+  class_path: omniai.data.datasets.LLMPretrainingDataModule
+  init_args:
+    datasets: []
+    batch_size: 32
+    num_workers: 8
+    preprocessing_num_workers: 32
+
+model:
+  class_path: omniai.models.HFCausalLM
+  init_args:
+    model_name_or_path: huggyllama/llama-7b
+
+optimizer:
+  class_path: torch.optim.AdamW
+  init_args:
+    lr: 5e-5
+    weight_decay: 0.01
+
+lr_scheduler:
+  class_path: torch.optim.lr_scheduler.CosineAnnealingLR
+  init_args:
+    T_max: 1000
+
+trainer:
+  class_path: omniai.trainers.huggingface.AccelerateTrainer
+  init_args:
+    scaling_config:
+      num_workers: 2
